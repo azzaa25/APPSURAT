@@ -130,7 +130,8 @@ class ArsipSuratController extends Controller
         $surat = Surat::findOrFail($id);
 
         if (Storage::exists($surat->file_path)) {
-            return Storage::download($surat->file_path, $surat->judul . '.pdf');
+            $safeName = preg_replace('/[\/\\\\]/', '_', $surat->judul) . '.pdf';
+            return Storage::download($surat->file_path, $safeName);
         }
 
         return abort(404, 'File tidak ditemukan.');
